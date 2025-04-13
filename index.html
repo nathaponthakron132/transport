@@ -3,215 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ประมูลและขายพระเครื่อง</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>แจ้งสถานะการจัดส่ง</title>
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Kanit', sans-serif;
-            background-color: #f8f9fa;
         }
-        .navbar {
+
+        body {
             background-color: #2c3e50;
-        }
-        .navbar-brand, .nav-link {
-            color: white !important;
-        }
-        .section-title {
-            color: #2c3e50;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        .amulet-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-        .amulet-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            background-color: #2c3e50;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s;
-            color: white;
-        }
-        .amulet-item:hover {
-            transform: scale(1.05);
-        }
-        .item-img {
-            max-width: 45%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-        .amulet-item p {
-            margin: 10px 0;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .btn-auth {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-        }
-        .btn-auth:hover {
-            background-color: #219653;
-        }
-        .footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 20px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            justify-content: center;
+            color: #fff;
+            line-height: 1.6;
+            padding: 30px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             align-items: center;
         }
-        .modal-content {
-            max-width: 40%;
-            max-height: 40%;
+
+        .form-container {
+            background-color: #34495e;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-container h2 {
+            color: #fff;
+            font-size: 24px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #ecf0f1;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
             border-radius: 8px;
-            object-fit: contain;
+            font-size: 16px;
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            transition: all 0.3s ease;
         }
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
+
+        .form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
             color: white;
-            font-size: 40px;
-            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .close:hover {
-            color: #ccc;
+
+        .form-container button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
         }
+
+        #reset-button {
+            background-color: #e74c3c;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #reset-button:hover {
+            background-color: #c0392b;
+        }
+
+        .tracking-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: #34495e;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tracking-table th, 
+        .tracking-table td {
+            padding: 15px;
+            border: none;
+            text-align: left;
+            word-break: break-word;
+        }
+
+        .tracking-table th {
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+        }
+
+        .tracking-table td {
+            color: #ecf0f1;
+            font-size: 16px;
+        }
+
+        .tracking-table tr {
+            border-bottom: 1px solid #2c3e50;
+        }
+
+        .tracking-table tr:last-child {
+            border-bottom: none;
+        }
+
         @media (max-width: 768px) {
-            .amulet-grid {
-                grid-template-columns: repeat(1, 1fr);
+            .form-container {
+                padding: 20px;
             }
-            .item-img {
-                max-width: 90%;
-            }
-            .modal-content {
-                max-width: 80%;
-                max-height: 80%;
-            }
-        }
-        @media (max-width: 480px) {
-            .modal-content {
-                max-width: 95%;
-                max-height: 70%;
+            .tracking-table {
+                max-width: 100%;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">พระเครื่องเมืองสยาม</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://script.google.com/macros/s/AKfycbyDMhPJSCT26iDeJX325QgEpA-i4wfQRmleX_NADLoVVBK4hJWIOrFgmJGgT8bJwdmD/exec">ไปยังฟอร์มอัปโหลด</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div class="form-container">
+        <h2>แจ้งสถานะการจัดส่งสินค้า</h2>
+        <form id="tracking-form" onsubmit="submitTrackingForm(event)">
+            <label for="tracking-number">เลขที่พัสดุ</label>
+            <input type="text" id="tracking-number" name="tracking-number" oninput="checkTrackingNumber()" required>
 
-    <div class="container mt-5" id="auction">
-        <h2 class="section-title">รายละเอียดพระเครื่องลงขาย</h2>
-        <div class="amulet-grid" id="amulet-grid"></div>
+            <button type="submit" id="submit-tracking-button">บันทึก</button>
+            <button type="button" id="reset-button" onclick="resetTrackingTable()">รีเซ็ต</button>
+        </form>
     </div>
 
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">×</span>
-        <img class="modal-content" id="modalImage">
-    </div>
+    <table class="tracking-table" id="tracking-table">
+        <thead>
+            <tr>
+                <th>แจ้งสถานะการจัดส่งสินค้าล่าสุด</th>
+            </tr>
+        </thead>
+        <tbody id="tracking-table-body"></tbody>
+    </table>
 
-    <footer class="footer">
-        <p>© 2025 พระเครื่องเมืองสยาม. สงวนลิขสิทธิ์.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const csvUrls = {
-            page1: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkssdx307YgLEtZ6UAhYKAWBeltx_MWEq_uZwnt7T-kRxvMXpMm-oJM7rDgAA46Qcw7woDi8tsrIOr/pub?gid=0&single=true&output=csv",
-            page2: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkssdx307YgLEtZ6UAhYKAWBeltx_MWEq_uZwnt7T-kRxvMXpMm-oJM7rDgAA46Qcw7woDi8tsrIOr/pub?gid=1154690343&single=true&output=csv",
-            page3: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkssdx307YgLEtZ6UAhYKAWBeltx_MWEq_uZwnt7T-kRxvMXpMm-oJM7rDgAA46Qcw7woDi8tsrIOr/pub?gid=1845618091&single=true&output=csv",
-            page4: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSkssdx307YgLEtZ6UAhYKAWBeltx_MWEq_uZwnt7T-kRxvMXpMm-oJM7rDgAA46Qcw7woDi8tsrIOr/pub?gid=681868286&single=true&output=csv"
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw8FvDrHn0DpSbRUoha7gos9rYP8xQS1aisFKjrqn1V1eMhmKPXnjzl5fcna995ei4Ikg/exec';
+        let trackingData = [];
+
+        window.onload = function() {
+            fetchTrackingData();
         };
-        const maxItems = 100;
 
-        const currentPage = new URLSearchParams(window.location.search).get('page') || 'page1';
-        const csvUrl = csvUrls[currentPage] || csvUrls.page1;
+        function fetchTrackingData() {
+            fetch(scriptURL + '?action=getTrackingData')
+                .then(response => response.json())
+                .then(data => {
+                    trackingData = data.map(trackingNumber => ({ trackingNumber }));
+                    updateTrackingTable();
+                })
+                .catch(error => console.error('Error fetching tracking data!', error.message));
+        }
 
-        fetch(csvUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(data => {
-                const rows = data.split("\n").slice(1);
-                const grid = document.getElementById("amulet-grid");
-                rows.forEach((row, index) => {
-                    if (index < maxItems && row.trim()) {
-                        const [imageUrl1, imageUrl2, name, description, price, sellerId, phone, status] = row.split(",");
-                        const item = document.createElement("div");
-                        item.className = "amulet-item";
-                        item.innerHTML = `
-                            <img src="${imageUrl1 || 'default-image.jpg'}" alt="${name}" class="item-img" onclick="openModal('${imageUrl1}')">
-                            <img src="${imageUrl2 || 'default-image.jpg'}" alt="${name}" class="item-img" onclick="openModal('${imageUrl2}')">
-                            <h5>${name || 'ไม่ระบุชื่อ'}</h5>
-                            <p>${description || 'ไม่มีรายละเอียด'}</p>
-                            <p>ราคาขาย: ${price || '0'} บาท</p>
-                            <p>ID ผู้ขาย: ${sellerId || 'ไม่ระบุ'}</p>
-                            <p>เบอร์ติดต่อ: ${phone || 'ไม่ระบุ'}</p>
-                            <p>สถานะ: ${status || 'ไม่ระบุ'}</p>
-                        `;
-                        grid.appendChild(item);
-                    }
+        function submitTrackingForm(event) {
+            event.preventDefault();
+            const form = document.getElementById('tracking-form');
+            const formData = new FormData();
+            formData.append('tracking-number', document.getElementById('tracking-number').value);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(() => {
+                    fetchTrackingData();
+                    alert('บันทึกข้อมูลการจัดส่งสำเร็จ!');
+                    form.reset();
+                    checkTrackingNumber();
+                })
+                .catch(error => {
+                    console.error('Error submitting tracking form!', error.message);
+                    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูลการจัดส่ง: ' + error.message);
                 });
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                alert('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้ กรุณาตรวจสอบลิงก์ CSV');
+        }
+
+        function updateTrackingTable() {
+            const tableBody = document.getElementById('tracking-table-body');
+            tableBody.innerHTML = '';
+            trackingData.forEach(data => {
+                const row = `<tr>
+                    <td>${data.trackingNumber}</td>
+                </tr>`;
+                tableBody.innerHTML += row;
             });
-
-        function openModal(imageSrc) {
-            const modal = document.getElementById("imageModal");
-            const modalImg = document.getElementById("modalImage");
-            modal.style.display = "flex";
-            modalImg.src = imageSrc;
         }
 
-        function closeModal() {
-            const modal = document.getElementById("imageModal");
-            modal.style.display = "none";
+        function checkTrackingNumber() {
+            const trackingNumber = document.getElementById('tracking-number').value;
+            const resetButton = document.getElementById('reset-button');
+            resetButton.style.display = trackingNumber === '999999' ? 'block' : 'none';
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById("imageModal");
-            if (event.target === modal) {
-                closeModal();
-            }
+        function resetTrackingTable() {
+            trackingData = [];
+            updateTrackingTable();
+            document.getElementById('tracking-form').reset();
+            document.getElementById('reset-button').style.display = 'none';
         }
     </script>
 </body>
